@@ -1,0 +1,239 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-24T08:46:48.376178+00:00",
+  "title": "Design System: Claude Code 마스터",
+  "extensions": {
+    "colorMeta": {
+      "case": {
+        "role": "neutral",
+        "displayName": "Aluminium Case",
+        "canonical": "#E3E6EA",
+        "tonalRamp": [
+          "#20242A",
+          "#3A4048",
+          "#59616B",
+          "#7A838E",
+          "#9EA6B0",
+          "#C3C9D2",
+          "#E3E6EA",
+          "#F4F5F7"
+        ]
+      },
+      "alpha": {
+        "role": "neutral",
+        "displayName": "Keycap White",
+        "canonical": "#F7F8F9",
+        "tonalRamp": [
+          "#23262A",
+          "#40454B",
+          "#61676F",
+          "#858C95",
+          "#AAB1BA",
+          "#CDD3DB",
+          "#E8EBEE",
+          "#F7F8F9"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "#151B2B",
+        "tonalRamp": [
+          "#151B2B",
+          "#2A3244",
+          "#3F4A5E",
+          "#566074",
+          "#737D90",
+          "#959EAE",
+          "#BCC3CF",
+          "#E3E6EA"
+        ]
+      },
+      "mod": {
+        "role": "primary",
+        "displayName": "Modifier Navy",
+        "canonical": "#1C2640",
+        "tonalRamp": [
+          "#0C1222",
+          "#1C2640",
+          "#2A3656",
+          "#3A4768",
+          "#56648A",
+          "#7D8BAE",
+          "#C9D2E6",
+          "#EEF2FA"
+        ]
+      },
+      "enter": {
+        "role": "primary",
+        "displayName": "Enter Yellow",
+        "canonical": "#FFC21A",
+        "tonalRamp": [
+          "#3D2C00",
+          "#6B4E00",
+          "#9C7200",
+          "#C98F00",
+          "#F0AE00",
+          "#FFC21A",
+          "#FFD866",
+          "#FFF1C2"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Home headline only."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Part titles and home section headings."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Topic headings inside the reading sheet."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Korean prose at a 42rem measure."
+      },
+      "label": {
+        "displayName": "Legend",
+        "purpose": "Keycap legends: topic numbers, STEP n, tip labels."
+      },
+      "code": {
+        "displayName": "Code",
+        "purpose": "Copyable examples on navy."
+      }
+    },
+    "shadows": [
+      {
+        "name": "key-rest",
+        "value": "inset 0 -2px 0 rgba(21,27,43,.05), inset 0 1px 0 rgba(255,255,255,.9), 0 3px 0 #CDD3DB, 0 5px 10px rgba(21,27,43,.16)",
+        "purpose": "Alpha keycap at rest."
+      },
+      {
+        "name": "key-pressed",
+        "value": "inset 0 -1px 0 rgba(21,27,43,.06), inset 0 1px 0 rgba(255,255,255,.7), 0 1px 0 #CDD3DB, 0 2px 4px rgba(21,27,43,.14)",
+        "purpose": "Pressed or active key, with translateY(2px)."
+      },
+      {
+        "name": "sheet",
+        "value": "0 12px 32px -12px rgba(21,27,43,.22), 0 2px 6px rgba(21,27,43,.06)",
+        "purpose": "Reading sheet."
+      },
+      {
+        "name": "plate",
+        "value": "inset 0 2px 6px rgba(21,27,43,.14), inset 0 -1px 0 rgba(255,255,255,.6)",
+        "purpose": "Recessed plate holding keys."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Key travel (140ms) and topic strike (260ms)."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Alpha Key",
+      "kind": "button",
+      "refersTo": "key",
+      "description": "Default control: links and buttons.",
+      "html": "<button class=\"ds-key\">원본 블로그 보기</button>",
+      "css": ".ds-key{display:inline-flex;align-items:center;gap:8px;min-height:52px;padding:0 20px;border:0;border-radius:10px;background:#F7F8F9;color:#151B2B;font:600 15px 'Pretendard Variable',sans-serif;box-shadow:inset 0 -2px 0 rgba(21,27,43,.05),inset 0 1px 0 rgba(255,255,255,.9),0 3px 0 #CDD3DB,0 5px 10px rgba(21,27,43,.16);transition:transform 140ms cubic-bezier(.16,1,.3,1),box-shadow 140ms}.ds-key:hover{background:#fff}.ds-key:active{transform:translateY(2px);box-shadow:0 1px 0 #CDD3DB,0 2px 4px rgba(21,27,43,.14)}.ds-key:focus-visible{outline:2px solid #1C2640;outline-offset:3px}"
+    },
+    {
+      "name": "Modifier Key",
+      "kind": "button",
+      "refersTo": "key-mod",
+      "description": "Active topics and secondary forward actions.",
+      "html": "<button class=\"ds-key-mod\">다음 주제: TDD 워크플로우</button>",
+      "css": ".ds-key-mod{display:inline-flex;align-items:center;gap:8px;min-height:48px;padding:0 20px;border:0;border-radius:10px;background:#1C2640;color:#F7F8F9;font:600 15px 'Pretendard Variable',sans-serif;box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 3px 0 #0C1222,0 5px 10px rgba(12,18,34,.28);transition:transform 140ms cubic-bezier(.16,1,.3,1)}.ds-key-mod:hover{background:#243154}.ds-key-mod:active{transform:translateY(2px);box-shadow:0 1px 0 #0C1222}.ds-key-mod:focus-visible{outline:2px solid #1C2640;outline-offset:3px}"
+    },
+    {
+      "name": "Enter Key",
+      "kind": "button",
+      "refersTo": "key-enter",
+      "description": "The one primary action.",
+      "html": "<a class=\"ds-key-enter\" href=\"#\">학습 시작하기</a>",
+      "css": ".ds-key-enter{display:inline-flex;align-items:center;gap:8px;min-height:60px;padding:0 28px;border-radius:10px;background:#FFC21A;color:#1C2640;font:700 18px 'Pretendard Variable',sans-serif;text-decoration:none;box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 3px 0 #C98F00,0 5px 12px rgba(201,143,0,.35);transition:transform 140ms cubic-bezier(.16,1,.3,1)}.ds-key-enter:hover{background:#FFCB3D}.ds-key-enter:active{transform:translateY(2px);box-shadow:0 1px 0 #C98F00}.ds-key-enter:focus-visible{outline:2px solid #1C2640;outline-offset:3px}"
+    },
+    {
+      "name": "Code Block",
+      "kind": "custom",
+      "refersTo": "code-block",
+      "description": "Copyable example on navy plastic.",
+      "html": "<figure class=\"ds-code\"><figcaption>MCP 사용 예제 <button>복사</button></figcaption><pre><span class=\"c\"># PostgreSQL MCP 연결</span>\nclaude mcp add postgres</pre></figure>",
+      "css": ".ds-code{margin:0;border-radius:16px;background:#1C2640;color:#EEF2FA;overflow:hidden}.ds-code figcaption{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;border-bottom:1px solid rgba(255,255,255,.1);color:#C9D2E6;font:500 13px 'Pretendard Variable',sans-serif}.ds-code button{border:0;border-radius:10px;background:#2A3656;color:#F7F8F9;padding:8px 12px;box-shadow:0 3px 0 #0C1222}.ds-code pre{margin:0;padding:20px;font:13px/1.75 'JetBrains Mono Variable',monospace}.ds-code .c{color:#8E9BBA}"
+    },
+    {
+      "name": "Topic Key",
+      "kind": "nav",
+      "refersTo": "key",
+      "description": "Tab keycap with number legend and done mark.",
+      "html": "<button class=\"ds-topic\" aria-selected=\"true\"><span class=\"n\">1</span><b>Multi-instance 병렬 개발</b></button>",
+      "css": ".ds-topic{display:flex;flex-direction:column;align-items:flex-start;gap:8px;width:220px;min-height:112px;padding:12px 16px;border:0;border-radius:10px;background:#F7F8F9;color:#151B2B;text-align:left;font:700 15px 'Pretendard Variable',sans-serif;box-shadow:0 3px 0 #CDD3DB,0 5px 10px rgba(21,27,43,.16)}.ds-topic .n{font:500 11px 'JetBrains Mono Variable',monospace;color:#566074}.ds-topic[aria-selected=true]{background:#1C2640;color:#F7F8F9;transform:translateY(2px);box-shadow:0 1px 0 #0C1222}.ds-topic[aria-selected=true] .n{color:#FFC21A}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Keycap Set",
+    "overview": "The guide is a custom mechanical keyboard on a light aluminium case. Each part is a row of keys, each topic a keycap the reader presses, each example the output they type.",
+    "keyCharacteristics": [
+      "Light aluminium case ground, near-white keycaps, navy modifiers, one signal-yellow Enter key.",
+      "Every control is a keycap; active state is a pressed key, not a color swap alone.",
+      "One Hangul-capable grotesk for everything; monospace only for code and keycap legends.",
+      "Progress is a mark: a check legend for done topics and a yellow homing bump for where you stopped."
+    ],
+    "rules": [
+      {
+        "name": "The One Enter Key Rule",
+        "body": "Yellow is the Enter key. A screen has at most one or two yellow keys, and they always mean \"go forward\".",
+        "section": "colors"
+      },
+      {
+        "name": "The Navy Holds Code Rule",
+        "body": "Every copyable example lives on navy modifier plastic; code never sits on white.",
+        "section": "colors"
+      },
+      {
+        "name": "The Legend Rule",
+        "body": "Monospace is for code and keycap legends only, never for decorative \"technical\" flavor.",
+        "section": "typography"
+      },
+      {
+        "name": "The Travel Rule",
+        "body": "Pressed means the key moved down and lost its skirt. Never show selection with color alone.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do make every new control a keycap (alpha, modifier or Enter) with the Travel Rule for its pressed state.",
+      "Do put every copyable example in the navy code block with a working copy key.",
+      "Do keep body copy at 16.5px/1.8 inside a 42rem measure.",
+      "Do mark progress with legends (check, homing bump), not rings or bars."
+    ],
+    "donts": [
+      "Don't use gradients, glass, or glowing edges; the world is matte plastic and aluminium.",
+      "Don't use emoji or Unicode glyphs as icons; draw 16-20px stroke SVGs.",
+      "Don't use yellow for anything but the forward action, selection and the homing bump.",
+      "Don't add eyebrow/kicker labels above headings; legends belong inside keys only."
+    ]
+  }
+}
