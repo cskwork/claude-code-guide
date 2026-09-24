@@ -1,106 +1,105 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
+import { parts, SITE_NAME, SOURCE_URL } from './data/curriculum.js'
+import { useProgress } from './composables/useProgress.js'
 
 const route = useRoute()
+const progress = useProgress()
 const mobileMenuOpen = ref(false)
 
-const navigation = [
-  { name: '홈', path: '/' },
-  { name: 'Part 1: 기본 워크플로우', path: '/part1' },
-  { name: 'Part 2: 고급 통합', path: '/part2' },
-  { name: 'Part 3: 확장 기능', path: '/part3' },
-  { name: 'Part 4: 팀 워크플로우', path: '/part4' }
-]
+watch(() => route.path, () => (mobileMenuOpen.value = false))
+
+function isCurrent(path) {
+  return route.path === path
+}
 </script>
 
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-    <!-- Navigation -->
-    <nav class="bg-white shadow-lg sticky top-0 z-50">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
-          <div class="flex items-center">
-            <router-link to="/" class="flex items-center space-x-3">
-              <svg class="w-8 h-8 text-primary" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z"/>
-              </svg>
-              <span class="text-2xl font-bold text-gray-900">Claude Code 마스터</span>
-            </router-link>
-          </div>
+  <a href="#main" class="key key-enter fixed left-4 top-3 z-[60] -translate-y-24 px-4 py-2 text-sm focus:translate-y-0">본문으로 건너뛰기</a>
 
-          <!-- Desktop Navigation -->
-          <div class="hidden md:flex items-center space-x-4">
-            <router-link
-              v-for="item in navigation"
-              :key="item.path"
-              :to="item.path"
-              class="px-3 py-2 rounded-md text-sm font-medium transition-colors"
-              :class="route.path === item.path
-                ? 'bg-primary text-white'
-                : 'text-gray-700 hover:bg-gray-100'"
-            >
-              {{ item.name }}
-            </router-link>
-          </div>
+  <header class="sticky top-0 z-50 border-b border-case-line/70 bg-case/90 backdrop-blur-md supports-[backdrop-filter]:bg-case/80">
+    <div class="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+      <router-link to="/" class="flex items-center gap-3 rounded-lg" :aria-label="`${SITE_NAME} 홈`">
+        <span aria-hidden="true" class="key key-mod h-9 w-9 shrink-0 [--travel:2px]">
+          <svg viewBox="0 0 20 20" class="h-4 w-4 text-enter" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 6 4 4-4 4M11 15h4" /></svg>
+        </span>
+        <span class="text-[17px] font-extrabold tracking-[-0.02em] text-ink">{{ SITE_NAME }}</span>
+      </router-link>
 
-          <!-- Mobile menu button -->
-          <div class="md:hidden flex items-center">
-            <button
-              @click="mobileMenuOpen = !mobileMenuOpen"
-              class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:bg-gray-100"
-            >
-              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path v-if="!mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                <path v-else stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
-        </div>
+      <nav aria-label="파트" class="hidden items-center gap-2 lg:flex">
+        <router-link
+          v-for="p in parts"
+          :key="p.id"
+          :to="p.path"
+          class="key min-h-[38px] px-3 text-[13px] [--travel:2px]"
+          :class="isCurrent(p.path) ? 'key-mod is-pressed' : ''"
+          :aria-current="isCurrent(p.path) ? 'page' : undefined"
+        >
+          <span class="legend" :class="isCurrent(p.path) ? 'text-enter' : 'text-ink-mute'">{{ p.n }}</span>
+          {{ p.title }}
+        </router-link>
+        <span class="ml-3 text-[13px] text-ink-mute tabular-nums" :title="`전체 ${progress.total}개 주제 중 완료한 주제 수`">
+          완료 <strong class="font-semibold text-ink">{{ progress.doneTotal() }}</strong>/{{ progress.total }}
+        </span>
+      </nav>
+
+      <button
+        type="button"
+        class="key min-h-[40px] px-3 text-sm lg:hidden [--travel:2px]"
+        :aria-expanded="mobileMenuOpen"
+        aria-controls="mobile-menu"
+        @click="mobileMenuOpen = !mobileMenuOpen"
+      >
+        <svg aria-hidden="true" viewBox="0 0 20 20" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+          <path v-if="!mobileMenuOpen" d="M3 6h14M3 10h14M3 14h14" />
+          <path v-else d="m5 5 10 10M15 5 5 15" />
+        </svg>
+        {{ mobileMenuOpen ? '닫기' : '목차' }}
+      </button>
+    </div>
+
+    <div v-show="mobileMenuOpen" id="mobile-menu" class="border-t border-case-line/70 bg-case lg:hidden">
+      <nav aria-label="파트 (모바일)" class="mx-auto grid max-w-6xl gap-3 px-4 py-4 sm:grid-cols-2 sm:px-6">
+        <router-link
+          to="/"
+          class="key min-h-[52px] !justify-start px-4 text-[15px]"
+          :class="isCurrent('/') ? 'key-mod is-pressed' : ''"
+          :aria-current="isCurrent('/') ? 'page' : undefined"
+        >홈</router-link>
+        <router-link
+          v-for="p in parts"
+          :key="p.id"
+          :to="p.path"
+          class="key min-h-[52px] !justify-start px-4 text-[15px]"
+          :class="isCurrent(p.path) ? 'key-mod is-pressed' : ''"
+          :aria-current="isCurrent(p.path) ? 'page' : undefined"
+        >
+          <span class="legend" :class="isCurrent(p.path) ? 'text-enter' : 'text-ink-mute'">{{ p.n }}</span>
+          Part {{ p.n }}: {{ p.title }}
+          <span class="ml-auto text-xs font-normal tabular-nums" :class="isCurrent(p.path) ? 'text-mod-legend' : 'text-ink-mute'">{{ progress.doneInPart(p.id) }}/{{ p.topics.length }}</span>
+        </router-link>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1" class="focus:outline-none">
+    <router-view />
+  </main>
+
+  <footer class="mt-10 bg-mod text-mod-legend">
+    <div class="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-12 sm:px-6 md:flex-row md:items-end md:justify-between lg:px-8">
+      <div>
+        <p class="text-base font-bold text-alpha">{{ SITE_NAME }}</p>
+        <p class="mt-2 max-w-measure text-sm leading-relaxed">
+          Claude Code 생산성 5배 올리는 법 - 백엔드 개발자를 위한 가이드
+        </p>
       </div>
-
-      <!-- Mobile menu -->
-      <div v-show="mobileMenuOpen" class="md:hidden border-t border-gray-200">
-        <div class="px-2 pt-2 pb-3 space-y-1">
-          <router-link
-            v-for="item in navigation"
-            :key="item.path"
-            :to="item.path"
-            @click="mobileMenuOpen = false"
-            class="block px-3 py-2 rounded-md text-base font-medium"
-            :class="route.path === item.path
-              ? 'bg-primary text-white'
-              : 'text-gray-700 hover:bg-gray-100'"
-          >
-            {{ item.name }}
-          </router-link>
-        </div>
-      </div>
-    </nav>
-
-    <!-- Main Content -->
-    <main>
-      <router-view />
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white mt-20">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div class="text-center">
-          <p class="text-gray-400">
-            Claude Code 생산성 5배 올리는 법 - 백엔드 개발자를 위한 가이드
-          </p>
-          <p class="text-gray-500 text-sm mt-2">
-            Based on <a href="https://memoryhub.tistory.com" class="text-primary hover:underline" target="_blank">MemoryHub</a> blog series
-          </p>
-        </div>
-      </div>
-    </footer>
-  </div>
+      <p class="text-sm">
+        Based on
+        <a :href="SOURCE_URL" class="font-semibold text-enter underline decoration-enter/40 hover:decoration-enter" target="_blank" rel="noopener">MemoryHub</a>
+        blog series
+      </p>
+    </div>
+  </footer>
 </template>
-
-<style scoped>
-.router-link-exact-active {
-  @apply bg-primary text-white;
-}
-</style>
