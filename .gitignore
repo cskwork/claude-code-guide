@@ -25,3 +25,6 @@ dist-ssr
 
 .vercel
 nul
+
+# Impeccable review captures
+.impeccable/review/

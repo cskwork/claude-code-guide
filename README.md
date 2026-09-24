@@ -4,10 +4,11 @@ A comprehensive guide for using Claude Code, built with Vue 3, Vite, and Tailwin
 
 ## Features
 
-- 📚 Multi-part guide structure (Part 1-4)
-- 🎨 Modern UI with Tailwind CSS
-- 🚀 Fast development with Vite
-- 🔄 Vue Router for navigation
+- Four-part guide (Part 1-4), each with four topics shown as keyboard "keys"
+- Shareable topic links (`/part2#commit`) and working deep links on Vercel (`vercel.json` SPA rewrite)
+- Learning progress saved in the browser: done marks per topic and "continue where you left off"
+- Keyboard navigation (number keys 1-4, arrow keys) and copy buttons with a manual-copy fallback
+- Design system documented in `DESIGN.md`; product context in `PRODUCT.md`; image provenance in `docs/asset-register.md`
 
 ## Tech Stack
 
@@ -50,6 +51,12 @@ The application will be available at `http://localhost:5173`
 ```bash
 # Build for production
 npm run build
+```
+
+### Test
+
+```bash
+npm test
 ```
 
 ### Preview
