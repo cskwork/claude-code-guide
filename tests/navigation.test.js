@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest'
+import { readFileSync } from 'node:fs'
 import { parts, resolveTopic, neighbours, totalTopics } from '../src/data/curriculum.js'
 import { copyText } from '../src/composables/copyText.js'
 
@@ -16,6 +17,15 @@ describe('curriculum', () => {
     expect(resolveTopic(part2, '#commit')).toBe('commit')
     expect(resolveTopic(part2, '')).toBe('mcp')
     expect(resolveTopic(part2, '#unknown')).toBe('mcp')
+  })
+
+  it('has a content panel in each part view for every curriculum topic', () => {
+    // Part views show content with v-show="active === '<topic id>'"; a renamed id would leave an empty panel.
+    for (const p of parts) {
+      const view = readFileSync(new URL(`../src/views/Part${p.n}.vue`, import.meta.url), 'utf8')
+      const panels = [...view.matchAll(/active === '([^']+)'/g)].map((m) => m[1])
+      expect(new Set(panels)).toEqual(new Set(p.topics.map((t) => t.id)))
+    }
   })
 
   it('links parts in order', () => {
