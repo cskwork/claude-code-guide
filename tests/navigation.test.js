@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest'
+import { readFileSync } from 'node:fs'
 import { parts, resolveTopic, neighbours, totalTopics } from '../src/data/curriculum.js'
 import { copyText } from '../src/composables/copyText.js'
 
@@ -16,6 +17,15 @@ describe('curriculum', () => {
     expect(resolveTopic(part2, '#commit')).toBe('commit')
     expect(resolveTopic(part2, '')).toBe('mcp')
     expect(resolveTopic(part2, '#unknown')).toBe('mcp')
+  })
+
+  it('has a content panel in each part view for every curriculum topic', () => {
+    // Part views show content with v-show="active === '<topic id>'"; a renamed id would leave an empty panel.
+    for (const p of parts) {
+      const view = readFileSync(new URL(`../src/views/Part${p.n}.vue`, import.meta.url), 'utf8')
+      const panels = [...view.matchAll(/active === '([^']+)'/g)].map((m) => m[1])
+      expect(new Set(panels)).toEqual(new Set(p.topics.map((t) => t.id)))
+    }
   })
 
   it('links parts in order', () => {
@@ -37,4 +47,40 @@ describe('copyText', () => {
     const ok = await copyText('x', null, { clipboard: { writeText: async () => { throw new Error('denied') } } })
     expect(ok).toBe(false)
   })
+
+  it('falls back to a hidden textarea and execCommand when the clipboard API is missing', async () => {
+    const doc = fakeDocument(() => true)
+    const ok = await copyText('npm test', doc, {})
+    expect(ok).toBe(true)
+    expect(doc.copied).toBe('npm test')
+    expect(doc.body.children).toHaveLength(0)
+  })
+
+  it('cleans up and reports failure when execCommand throws', async () => {
+    const doc = fakeDocument(() => { throw new Error('blocked') })
+    const ok = await copyText('x', doc, { clipboard: { writeText: async () => { throw new Error('denied') } } })
+    expect(ok).toBe(false)
+    expect(doc.body.children).toHaveLength(0)
+  })
 })
+
+// Minimal document stand-in: records what was selected when "copy" runs.
+function fakeDocument(exec) {
+  const doc = {
+    copied: null,
+    body: {
+      children: [],
+      appendChild(el) { this.children.push(el) },
+      removeChild(el) { this.children.splice(this.children.indexOf(el), 1) }
+    },
+    createElement() {
+      return { value: '', style: {}, setAttribute() {}, select() { doc.selected = this.value } }
+    },
+    execCommand(cmd) {
+      const ok = exec()
+      if (cmd === 'copy' && ok) doc.copied = doc.selected
+      return ok
+    }
+  }
+  return doc
+}
